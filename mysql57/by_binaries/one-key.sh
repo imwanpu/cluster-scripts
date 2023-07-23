@@ -65,12 +65,13 @@ chown mysql:mysql /usr/local/mysql/mysql-files
 chmod 750 /usr/local/mysql/mysql-files
 ${mysql_base}/bin/mysqld --initialize --user=mysql
 ${mysql_base}/bin/mysql_ssl_rsa_setup
-${mysql_base}/bin/mysqld_safe --user=mysql &
+${mysql_base}/bin/mysqld_safe --user=mysql & > /tmp/mysqlroot.log
 cp support-files/mysql.server /etc/init.d/mysql.server
 touch /usr/local/mysql/my.cnf
 
 ## 拿到默认密码
-temporaty_pssword="Tw7joS<AjC6="
+temporaty_pssword=cat /tmp/mysqlroot.log | awk -F "root@localhost: " '/root@localhost/{print $2}'
+/tmp/mysqlroot.log
 
 # 根据默认密码修改密码
-/usr/local/mysql/bin/mysqladmin -u root password 'p0-p0-P0-'
+/usr/local/mysql/bin/mysqladmin -u root --password="${temporaty_pssword}" password 'p0-p0-P0-'
