@@ -63,15 +63,19 @@ ln -s /usr/local/${mysql_package_name%.tar.gz} /usr/local/mysql
 mkdir /usr/local/mysql/mysql-files
 chown mysql:mysql /usr/local/mysql/mysql-files
 chmod 750 /usr/local/mysql/mysql-files
-${mysql_base}/bin/mysqld --initialize --user=mysql
+log=$(${mysql_base}/bin/mysqld --initialize --user=mysql 2>&1)
 ${mysql_base}/bin/mysql_ssl_rsa_setup
-${mysql_base}/bin/mysqld_safe --user=mysql & > /tmp/mysqlroot.log
-cp support-files/mysql.server /etc/init.d/mysql.server
+${mysql_base}/bin/mysqld_safe --user=mysql >/usr/local/mysql/mysqlroot.log &
+sleep 5
+cp /usr/local/mysql/support-files/mysql.server /etc/init.d/mysql.server
 touch /usr/local/mysql/my.cnf
 
 ## 拿到默认密码
-temporaty_pssword=cat /tmp/mysqlroot.log | awk -F "root@localhost: " '/root@localhost/{print $2}'
-/tmp/mysqlroot.log
+temporaty_pssword=$(echo $log | awk -F "root@localhost: " '/root@localhost/{print $2}')
+echo "[OK] - the initialization password is: $temporaty_pssword"
 
 # 根据默认密码修改密码
-/usr/local/mysql/bin/mysqladmin -u root --password="${temporaty_pssword}" password 'p0-p0-P0-'
+/usr/local/mysql/bin/mysqladmin -u root --password="${temporaty_pssword}" password "${mysql_root_passwd}"
+
+echo "export PATH=\$PATH:/usr/local/mysql/bin" >>/etc/bashrc
+source /etc/bashrc
