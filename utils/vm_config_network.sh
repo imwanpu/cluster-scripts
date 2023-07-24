@@ -14,3 +14,7 @@ sed $sed_2_arg /etc/sysconfig/netword-scripts/ifcfg-ens160 -in
 
 echo "new uuid is: $new_uuid"
 echo "new ip is: $new_ip"
+
+systemctl restart network
+systemctl disable firewalld
+systemctl stop firewalld
