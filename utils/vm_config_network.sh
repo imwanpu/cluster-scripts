@@ -8,10 +8,10 @@ new_uuid="$((RANDOM % 100000000))-$((RANDOM % 10000))-$((RANDOM % 10000))-$((RAN
 new_ip="10.0.0."$1
 new_hostname="h"$1
 
-sed_1_arg="/UUID=/s/.*/UUID=${new_uuid}/"
-sed $sed_1_arg /etc/sysconfig/network-scripts/ifcfg-ens160 -in
-sed_2_arg="/IPADDR=/s/.*/IPADDR=$new_ip/"
-sed $sed_2_arg /etc/sysconfig/network-scripts/ifcfg-ens160 -in
+sed_1_arg="/UUID=/s/.*/UUID=${new_uuid}/p"
+sed $sed_1_arg /etc/sysconfig/network-scripts/ifcfg-ens33 -in
+sed_2_arg="/IPADDR=/s/.*/IPADDR=$new_ip/p"
+sed $sed_2_arg /etc/sysconfig/network-scripts/ifcfg-ens33 -in
 hostname $new_hostname
 
 echo "new uuid is: $new_uuid"
