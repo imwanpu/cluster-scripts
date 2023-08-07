@@ -1,0 +1,25 @@
+- hosts: all
+  remote_user: root
+
+  tasks:
+  - name: Ansible Ping
+    ping:
+
+  - name: Copy host_be_ping.txt
+    copy:
+      src: /root/cluster-scripts/cluster_ping/host_be_ping.txt
+      dest: /tmp/host_be_ping.txt
+      mode: '0755'
+  # - name: Copy host_be_ping.txt
+  #   copy:
+  #     src: /root/cluster-scripts/cluster_ping/parallel_ping.sh
+  #     dest: /tmp/parallel_ping.sh
+  #     mode: '0755'
+  
+  - name: Parallel Ping
+    script: /root/cluster-scripts/cluster_ping/parallel_ping.sh
+    register: script_output
+  
+  - name: Display Result
+    debug:
+      var: script_output.stdout_lines

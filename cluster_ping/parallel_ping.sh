@@ -1,6 +1,6 @@
 #!/bin/bash
 
-file_name="host_be_ping.txt" # WARNING 文件最后留个空行
+file_name="/tmp/host_be_ping.txt" # WARNING 文件最后留个空行
 ping_count=3
 ping_wait=$(hostname -i)
 is_all_ip=$1
