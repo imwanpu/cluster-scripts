@@ -1,0 +1,36 @@
+- hosts: all
+
+  tasks:
+# 分发 bash 脚本和 domains.txt 文件
+    - name: Ping
+      ping:
+    - name: Make /tmp/ansible/
+      shell: 'mkdir /tmp/ansible'
+    - name: Distribute serial_nslookup.sh
+      copy:
+        src: /root/cluster-scripts/cluster_nslookup/parallel_nslookup.sh
+        dest: /tmp/ansible/parallel_nslookup.sh
+        force: yes
+    - name: Distribute domains.txt
+      copy:
+        src: /root/cluster-scripts/cluster_nslookup/domains.txt
+        dest: /tmp/ansible/domains.txt
+        force: yes
+
+# 执行 bash 脚本, 生成数据文件
+    - name: Run Script /tmp/ansible/cluster_nslookup.sh
+      shell: 'bash /tmp/ansible/cluster_nslookup.sh'
+
+
+# 收集数据文件
+
+
+
+
+# 删除分发出去的 bash 脚本, domains.txt 文件和数据文件
+
+    - name: Remove /tmp/ansible
+      shell: 'rm -rf /tmp/ansible'
+
+
+# 在 parser.py 所在的主机处理数据

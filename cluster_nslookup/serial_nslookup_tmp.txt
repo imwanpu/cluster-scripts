@@ -1,0 +1,67 @@
+Host IP	10.0.0.139
+Server:		114.114.114.114
+Address:	114.114.114.114#53
+
+Non-authoritative answer:
+Name:	baidu.com
+Address: 39.156.66.10
+Name:	baidu.com
+Address: 110.242.68.66
+
+
+real	0m0.042s
+user	0m0.001s
+sys	0m0.005s
+Tue Aug  8 13:17:34 CST 2023
+Server:		114.114.114.114
+Address:	114.114.114.114#53
+
+Non-authoritative answer:
+Name:	icourse163.org
+Address: 223.252.199.73
+
+
+real	0m0.054s
+user	0m0.000s
+sys	0m0.005s
+Tue Aug  8 13:17:34 CST 2023
+Server:		114.114.114.114
+Address:	114.114.114.114#53
+
+Non-authoritative answer:
+Name:	qq.com
+Address: 111.30.144.71
+Name:	qq.com
+Address: 112.53.26.232
+
+
+real	0m0.061s
+user	0m0.006s
+sys	0m0.000s
+Tue Aug  8 13:17:34 CST 2023
+Server:		114.114.114.114
+Address:	114.114.114.114#53
+
+Non-authoritative answer:
+Name:	zhihu.com
+Address: 103.41.167.234
+
+
+real	0m0.061s
+user	0m0.000s
+sys	0m0.005s
+Tue Aug  8 13:17:35 CST 2023
+Server:		114.114.114.114
+Address:	114.114.114.114#53
+
+Non-authoritative answer:
+Name:	qq.com
+Address: 112.53.26.232
+Name:	qq.com
+Address: 111.30.144.71
+
+
+real	0m0.045s
+user	0m0.003s
+sys	0m0.003s
+Tue Aug  8 13:17:35 CST 2023
