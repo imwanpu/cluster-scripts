@@ -1,5 +1,4 @@
 - hosts: all
-
   tasks:
 # 分发 bash 脚本和 domains.txt 文件
     - name: Ping
@@ -8,8 +7,8 @@
       shell: 'mkdir /tmp/ansible'
     - name: Distribute serial_nslookup.sh
       copy:
-        src: /root/cluster-scripts/cluster_nslookup/parallel_nslookup.sh
-        dest: /tmp/ansible/parallel_nslookup.sh
+        src: /root/cluster-scripts/cluster_nslookup/serial_nslookup.sh
+        dest: /tmp/ansible/serial_nslookup.sh
         force: yes
     - name: Distribute domains.txt
       copy:
@@ -18,19 +17,31 @@
         force: yes
 
 # 执行 bash 脚本, 生成数据文件
-    - name: Run Script /tmp/ansible/cluster_nslookup.sh
-      shell: 'bash /tmp/ansible/cluster_nslookup.sh'
+    - name: Run Script /tmp/ansible/serial_nslookup.sh
+      shell: bash /tmp/ansible/serial_nslookup.sh
 
 
 # 收集数据文件
+## WARNING 如何执行失败的话记得吧 /tmp/ansible/ 目录删了, ` ansible all -m shell -a 'rm /tmp/ansible -rf'`
+    - name: Collect serial_nslookup_host_result.txt
+      fetch:
+        src: /tmp/ansible/serial_nslookup_host_result.txt
+        dest: /tmp/serial_nslookup_data/
 
 
 
-
-# 删除分发出去的 bash 脚本, domains.txt 文件和数据文件
+# 删除分发出去的 bash 脚本, domains.txt 文件和数据文件, 下面的可以直接用, 能收集之后在反注释
 
     - name: Remove /tmp/ansible
       shell: 'rm -rf /tmp/ansible'
 
 
+
 # 在 parser.py 所在的主机处理数据
+- hosts: localhost
+  tasks:
+    - name: Run parser.py on localhost
+      shell: python3 /root/cluster-scripts/cluster_nslookup/parser.py > /root/cluster-scripts/cluster_nslookup/result.txt && cat /root/cluster-scripts/cluster_nslookup/result.txt
+    - name: Clean /tmp/serial_nslookup_data/
+      shell: rm -rf /tmp/serial_nslookup_data/
+  
