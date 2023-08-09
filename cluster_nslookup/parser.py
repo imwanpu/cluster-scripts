@@ -75,6 +75,11 @@ def parse_serial_nslookup_host_result(file_path: str) -> host_result:
                 hr.results[-1].server = kv[1]
             elif 'Address:' in kv:
                 hr.results[-1].address = kv[1]
+            elif 'NXDOMAIN' in kv:
+                a = answer()
+                hr.results[-1].answers.append(a)
+                hr.results[-1].answers[-1].name = kv[4][:-1]
+                hr.results[-1].answers[-1].address = kv[5]
             elif 'Name:' in kv:
                 a = answer()
                 hr.results[-1].answers.append(a)
