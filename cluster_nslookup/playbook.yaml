@@ -9,12 +9,12 @@
         state: directory
     - name: Distribute serial_nslookup.sh
       copy:
-        src: /root/cluster-scripts/cluster_nslookup/serial_nslookup.sh
+        src: "{{ playbook_dir }}/serial_nslookup.sh"
         dest: /tmp/ansible/serial_nslookup.sh
         force: yes
     - name: Distribute domains.txt
       copy:
-        src: /root/cluster-scripts/cluster_nslookup/domains.txt
+        src: "{{ playbook_dir }}/domains.txt"
         dest: /tmp/ansible/domains.txt
         force: yes
 
@@ -45,7 +45,7 @@
 - hosts: localhost
   tasks:
     - name: Run parser.py on localhost
-      shell: python3 /root/cluster-scripts/cluster_nslookup/parser.py > /root/cluster-scripts/cluster_nslookup/result.txt && cat /root/cluster-scripts/cluster_nslookup/result.txt
+      shell: "python3 {{ playbook_dir }}/parser.py > {{ playbook_dir }}/result.txt && cat {{ playbook_dir }}/result.txt"
     - name: Clean /tmp/serial_nslookup_data/
       file:
         path: rm -rf /tmp/serial_nslookup_data/
