@@ -32,7 +32,7 @@ class host_result:
         for domain in self.results:
             for answer in domain.answers:
                 print(
-                    f'{domain.date:<32}{domain.server:<18}{self.host_ip:<18}{answer.name:<28}{answer.address:<18}{domain.real:<10}')
+                    f'{domain.date:<32}{domain.server:<18}{self.host_ip:<18}{answer.name:<28}{answer.address:<32}{domain.real:<10}')
 
 
 class hosts_results:
@@ -54,7 +54,7 @@ class hosts_results:
         domain_date = 'Date'
         host_result_host_ip = 'Source'
         print(
-            f'{domain_date:<32}{domain_server:<18}{host_result_host_ip:<18}{answer_name:<28}{answer_address:<18}{domain_real:<10}')
+            f'{domain_date:<32}{domain_server:<18}{host_result_host_ip:<18}{answer_name:<28}{answer_address:<32}{domain_real:<10}')
 
 
 def parse_serial_nslookup_host_result(file_path: str) -> host_result:
