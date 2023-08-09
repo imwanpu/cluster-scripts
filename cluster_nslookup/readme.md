@@ -19,8 +19,8 @@ cat ./result.txt
 ```
 ## TODO
 
-- [ ] 修复不存在DNS记录域名不显示的问题
-- [ ] 修复 yaml 文件执行时的用 ansible file 模块替代 shell -a 'rm -rf' 警告
+- [x] 修复不存在DNS记录域名不显示的问题
+- [x] 修复 yaml 文件执行时的用 ansible file 模块替代 shell -a 'rm -rf' 警告
 
 
 ## FAQ(Frequently Asked Questions)
