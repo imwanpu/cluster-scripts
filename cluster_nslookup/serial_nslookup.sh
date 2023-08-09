@@ -17,7 +17,8 @@ printf "Host IP\t%s\n" "${host_ip}" >"${tmp_file}"
 for domain in ${domains}; do
     # nslookup_result=$(time nslookup "${domain}" ${dns} 2>&1)
     # echo "${nslookup_result}"
-    (time nslookup "${domain}" ${dns} && date) >>"${tmp_file}" 2>&1
+    (time nslookup "${domain}" ${dns}) >>"${tmp_file}" 2>&1
+    date >>"${tmp_file}"
     # awk '
     #     {count[$1] += $2};
     #     END{
