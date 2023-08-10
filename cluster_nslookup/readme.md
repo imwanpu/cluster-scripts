@@ -38,6 +38,7 @@ Explanation of `./playbook.yaml` parameters. `./playbook.yaml` 参数说明
 - [x] 修复 yaml 文件执行时的用 ansible file 模块替代 shell -a 'rm -rf' 警告
 - [x] 添加时间控制功能
 - [ ] 添加试试查看功能
+- [ ] 是否清理本机收集到的数据
 
 ## FAQ(Frequently Asked Questions)
 
