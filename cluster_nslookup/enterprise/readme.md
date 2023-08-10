@@ -11,9 +11,10 @@ a tool for querying DNS records on hosts in a cluster.
 - `parser.py`: parsing the collected data `/tmp/serial_nslookup_data/` to the file `./cluster_nslookup/result.txt` 将收集在 `/tmp/serial_nslookup_data/` 目录下的数据文件解析, 将解析后的数据存储在 `./cluster_nslookup/result.txt` 中
 - `domains.txt`: domains that require DNS resolution on each host in the cluster 需要在集群中每台主机上进行 DNS 查询的域名
 - `inventory.ini`: list of host to be operated in the cluster 需要操作的主机列表
-- `result.txt`: final result 最终数据
+- `result.txt`: unsorted aggregate data 未排序的汇总数据
+- `sorted_date.txt`: sorted aggregate data 经过排序的最终数据
 
-## How to Use
+## How to Use 使用说明
 
 Modify the `domains.txt` and `inventory.ini` files as needed.
 
@@ -21,10 +22,16 @@ Modify the `domains.txt` and `inventory.ini` files as needed.
 
 
 ```shell
-rm -rf ./result.txt && ansible-playbook -i ./inventory.ini ./playbook.yaml
-ansible-playbook -i inventory.ini playbook.yaml --extra-vars "elapsed=60 interval=3"   
+rm -rf ./result.txt ./sorted_result.txt && 
+ansible-playbook -i ./inventory.ini ./playbook.yaml --extra-vars "elapsed=60 interval=3"
 cat ./result.txt
 ```
+Explanation of `./playbook.yaml` parameters. `./playbook.yaml` 参数说明
+
+- `elapsed`: total time for scheduled DNS resolution script running on each host in the cluster.集群中每台主机上运行定时DNS解析脚本的总时间
+- `interval`: interval time for collecting DNS resolution data on each host in the cluser. 集群中每台主机上收集DNS解析数据的间隔时间
+
+
 ## TODO
 
 - [x] 修复不存在DNS记录域名不显示的问题

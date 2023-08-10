@@ -1,2 +1,3 @@
 *.tar.gz
 cluster_nslookup/**/result.txt
+cluster_nslookup/**/sorted_result.txt
