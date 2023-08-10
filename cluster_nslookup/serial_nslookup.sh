@@ -5,6 +5,8 @@
 domains_file="/tmp/ansible/domains.txt"
 dns="114.114.114.114"
 tmp_file="/tmp/ansible/serial_nslookup_host_result.txt"
+total_time=$1
+interval_time=$2
 
 domains=$(cat ${domains_file})
 if [ -f "${tmp_file}" ]; then
@@ -14,20 +16,15 @@ fi
 host_ip=$(hostname -I | awk '{print $1}')
 
 printf "Host IP\t%s\n" "${host_ip}" >"${tmp_file}"
-for domain in ${domains}; do
-    # nslookup_result=$(time nslookup "${domain}" ${dns} 2>&1)
-    # echo "${nslookup_result}"
-    (time nslookup "${domain}" ${dns}) >>"${tmp_file}" 2>&1
-    date >>"${tmp_file}"
-    # awk '
-    #     {count[$1] += $2};
-    #     END{
-    #         for (key in count) {printf("%s\t\t", key)}
-    #         printf("\n")
-    #         for (key in count) {printf("%s\t\t", count[key])}
-    #         printf("\n")
-    #     }
-    # ' ${tmp_file}
+
+count=0
+while [ $count -lt ${total_time} ]; do
+    for domain in ${domains}; do
+        (time nslookup "${domain}" ${dns}) >>"${tmp_file}" 2>&1
+        date +%Y-%m-%d_%H:%M:%S >>"${tmp_file}"
+    done
+    count=$((count + interval_time))
+    sleep ${interval_time}
 done
 
 exit 0

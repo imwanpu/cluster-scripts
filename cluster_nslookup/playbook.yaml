@@ -20,7 +20,7 @@
 
 # 执行 bash 脚本, 生成数据文件
     - name: Run Script /tmp/ansible/serial_nslookup.sh
-      shell: bash /tmp/ansible/serial_nslookup.sh
+      shell: bash /tmp/ansible/serial_nslookup.sh {{ elapsed }} {{ interval }}
 
 
 # 收集数据文件
@@ -50,4 +50,6 @@
       file:
         path: rm -rf /tmp/serial_nslookup_data/
         state: absent
+    - name: Sort data
+      shell: tail -n +2 {{ playbook_dir }}/result.txt | sort -k1 -k3 -k4 > {{ playbook_dir }}/sorted_result.txt
   
