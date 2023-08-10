@@ -18,6 +18,6 @@ def get_group_from_file(file_path: str) -> ThreadingGroup:
 
 g = get_group_from_file(inventory_path)
 results = g.run(
-    'date +%Y-%m-%d_%H:%M:%S && time nslookup baidu.com 114.114.114.114', hide=True)
+    'date +%Y-%m-%d_%H:%M:%S && time nslookup -timeout=1 -retry=1 baidu.com 114.114.114.114', hide=True)
 for connection, result in results.items():
     print(f'{connection.host}---{result.stdout}---{result.stderr}')
