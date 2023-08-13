@@ -30,6 +30,10 @@ cat $(ls -t --time=ctime ./*_sorted_result.txt | head -n 1) | grep "timed OUT co
 
 ```
 
+```shell
+ansible -i ./inventory.ini all -m shell -a "rm -rf /tmp/cluster_nslookup_v0.2"
+```
+
 ## `playbook.yaml` 参数说明
 
 
