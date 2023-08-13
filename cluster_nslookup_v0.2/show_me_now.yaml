@@ -1,0 +1,15 @@
+- hosts: all
+  tasks:
+    - name: Collect serial_nslookup_host_result.txt
+      fetch:
+        src: /tmp/cluster_nslookup_v0.2/result.txt
+        dest: "{{ playbook_dir }}/collected_data/"
+
+- hosts: localhost
+  tasks:
+    - name: Parse 
+      shell: "python3 {{ playbook_dir }}/parse.py"
+      register: output
+    - name: This is result file
+      debug:
+        var: output.stdout_lines

@@ -1,0 +1,31 @@
+- hosts: all
+  tasks:
+# 分发 bash 脚本和 domains.txt 文件
+    - name: Ping
+      ping:
+
+
+# 收集数据文件
+## WARNING 如何执行失败的话记得吧 /tmp/ansible/ 目录删了, ` ansible all -m shell -a 'rm /tmp/ansible -rf'`
+    - name: Collect serial_nslookup_host_result.txt
+      fetch:
+        src: /tmp/ansible_serial_nslookup/serial_nslookup_host_result.txt
+        dest: /tmp/serial_nslookup_data/
+
+
+# 在 parser.py 所在的主机处理数据
+- hosts: localhost
+  tasks:
+    - name: Get current time
+      shell: "date +%Y-%m-%d_%H:%M:%S"
+      register: current_time
+
+    - name: Run parser.py on localhost
+      shell: 'python3 {{ playbook_dir }}/parser.py > {{ playbook_dir }}/{{ current_time.stdout }}_result.txt'
+    - name: Clean /tmp/serial_nslookup_data/
+      file:
+        path: rm -rf /tmp/serial_nslookup_data/
+        state: absent
+    - name: Sort data
+      shell: 'tail -n +2 {{ playbook_dir }}/{{ current_time.stdout }}_result.txt | sort -k1 -k3 -k4 > {{ playbook_dir }}/{{ current_time.stdout }}_sorted_result.txt'
+  

@@ -1,1 +1,4 @@
 baidu.com
+qq.com
+cloud.qq.com
+connect.not

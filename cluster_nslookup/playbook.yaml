@@ -3,41 +3,41 @@
 # 分发 bash 脚本和 domains.txt 文件
     - name: Ping
       ping:
-    - name: Make /tmp/ansible/
+    - name: Make /tmp/ansible_serial_nslookup/
       file:
-        path: /tmp/ansible
+        path: /tmp/ansible_serial_nslookup
         state: directory
     - name: Distribute serial_nslookup.sh
       copy:
         src: "{{ playbook_dir }}/serial_nslookup.sh"
-        dest: /tmp/ansible/serial_nslookup.sh
+        dest: /tmp/ansible_serial_nslookup/serial_nslookup.sh
         force: yes
     - name: Distribute domains.txt
       copy:
         src: "{{ playbook_dir }}/domains.txt"
-        dest: /tmp/ansible/domains.txt
+        dest: /tmp/ansible_serial_nslookup/domains.txt
         force: yes
 
 # 执行 bash 脚本, 生成数据文件
-    - name: Run Script /tmp/ansible/serial_nslookup.sh
-      shell: bash /tmp/ansible/serial_nslookup.sh {{ elapsed }} {{ interval }}
+    - name: Run Script /tmp/ansible_serial_nslookup/serial_nslookup.sh
+      shell: bash /tmp/ansible_serial_nslookup/serial_nslookup.sh {{ elapsed }} {{ interval }} {{ dns_timeout }} {{ dns_retry }}
 
 
 # 收集数据文件
 ## WARNING 如何执行失败的话记得吧 /tmp/ansible/ 目录删了, ` ansible all -m shell -a 'rm /tmp/ansible -rf'`
     - name: Collect serial_nslookup_host_result.txt
       fetch:
-        src: /tmp/ansible/serial_nslookup_host_result.txt
+        src: /tmp/ansible_serial_nslookup/serial_nslookup_host_result.txt
         dest: /tmp/serial_nslookup_data/
 
 
 
 # 删除分发出去的 bash 脚本, domains.txt 文件和数据文件, 下面的可以直接用, 能收集之后在反注释
 
-    - name: Remove /tmp/ansible
-      file:
-        path: /tmp/ansible
-        state: absent
+    # - name: Remove /tmp/ansible_serial_nslookup
+    #   file:
+    #     path: /tmp/ansible_serial_nslookup
+    #     state: absent
 
 
 
@@ -45,7 +45,7 @@
 - hosts: localhost
   tasks:
     - name: Run parser.py on localhost
-      shell: "python3 {{ playbook_dir }}/parser.py > {{ playbook_dir }}/result.txt && cat {{ playbook_dir }}/result.txt"
+      shell: "python3 {{ playbook_dir }}/parser.py > {{ playbook_dir }}/result.txt"
     - name: Clean /tmp/serial_nslookup_data/
       file:
         path: rm -rf /tmp/serial_nslookup_data/

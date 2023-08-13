@@ -1,0 +1,43 @@
+- hosts: all
+  tasks:
+    - name: Make /tmp/cluster_nslookup_v0.2
+      file:
+        path: /tmp/cluster_nslookup_v0.2
+        state: directory
+    - name: Distribute host_script.sh
+      copy:
+        src: "{{ playbook_dir }}/host_script.sh"
+        dest: /tmp/cluster_nslookup_v0.2/host_script.sh
+        force: yes
+    - name: Distribute dnss.txt
+      copy:
+        src: "{{ playbook_dir }}/dnss.txt"
+        dest: /tmp/cluster_nslookup_v0.2/dnss.txt
+        force: yes
+    - name: Distribute domains.txt
+      copy:
+        src: "{{ playbook_dir }}/domains.txt"
+        dest: /tmp/cluster_nslookup_v0.2/domains.txt
+        force: yes
+
+    - name: Run script /tmp/cluster_nslookup_v0.2/host_script.sh
+      shell: bash /tmp/cluster_nslookup_v0.2/host_script.sh {{ elapsed }} {{ interval }} {{ dns_timeout }} {{ dns_retry  }}
+
+    - name: Collect serial_nslookup_host_result.txt
+      fetch:
+        src: /tmp/cluster_nslookup_v0.2/result.txt
+        dest: "{{ playbook_dir }}/collected_data/"
+
+    - name: Remove directory /tmp/cluster_nslookup_v0.2
+      file:
+        path: /tmp/cluster_nslookup_v0.2
+        state: absent
+
+- hosts: localhost
+  tasks:
+    - name: Parse 
+      shell: "python3 {{ playbook_dir }}/parse.py"
+      register: output
+    - name: This is result file
+      debug:
+        var: output.stdout_lines
