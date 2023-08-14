@@ -39,7 +39,10 @@ ansible -i ./inventory.ini all -m shell -a "rm -rf /tmp/cluster_nslookup_v0.2"
 
 ## `playbook.yaml` 参数说明
 
-
+- `elapsed`: `./playbook.yaml` 的设计运行时间, 不包括 nslookup 执行的时间
+- `interval`: 集群中主机每次执行 nslookup 命令的间隔时间
+- `dns_timeout`: `nslookup` 命令的 `timeout` 参数值, CentOS 7 中默认为 5s
+-  `dns_retry`: `nslookup` 命令的 `retry` 参数值, CentOS 7 中默认为 3 次
 
 
 ## 各文件说明
