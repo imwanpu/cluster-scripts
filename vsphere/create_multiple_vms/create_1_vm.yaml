@@ -1,0 +1,45 @@
+---
+# - name: Create VM from CentOS template
+- hosts: localhost
+  vars:
+    vcenter_hostname: "10.0.0.4"
+    vcenter_username: "administrator@vsphere.local"
+    vcenter_password: "admin123@+"
+    datacenter_name: "Datacenter"
+    cluster_name: "10.0.0.3"
+    datastore_name: "datastore1"
+    template_name: "centos-7.9-1"
+    vm_name: "centos-7.9-1-clone-1"
+    vm_network: "VM Network"
+    vm_folder: "/clone"
+    vm_datastore_cluster: "10.0.0.3"
+    ansible_python_interpreter: "/bin/python2"
+  tasks:
+    - name:  Clone a virtual machine from Linux template and customize
+      vmware_guest:
+        hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        datacenter: "{{ datacenter_name }}"
+        state: present
+        folder: /DC1/vm
+        template: "{{ template_name }}"
+        name: "{{ vm_name }}"
+        cluster: DC1_C1
+        networks:
+          - name: VM Network
+            ip: 192.168.10.11
+            netmask: 255.255.255.0
+        wait_for_ip_address: true
+        customization:
+          # domain: "{{ guest_domain }}"
+          dns_servers:
+            - 8.9.9.9
+            - 7.8.8.9
+          dns_suffix:
+            - example.com
+            - example2.com
+          script_text: |
+            #!/bin/bash
+            touch /tmp/touch-from-playbook
+      delegate_to: localhost
