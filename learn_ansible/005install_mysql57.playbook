@@ -1,0 +1,12 @@
+- hosts: 192.168.110.128
+  tasks:
+  - name: Ping
+    ansible.builtin.ping:
+  - name: Update yum
+    ansible.builtin.shell: yum install -y epel-release && yum update -y
+  - name: Use Mysql 5.7
+    ansible.builtin.shell: 
+      # yum install -y mysql-community-server
+      # systemctl start mysqld && systemctl enable mysqld && temp_password=$(sudo grep 'temporary password' /var/log/mysqld.log | awk '{print $NF}')
+      # mysql -uroot -p"$temp_password" --connect-expired-password -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'Root123@+';"
+      # exit 0

@@ -1,0 +1,12 @@
+---
+- hosts: all
+  tasks:
+  - name: Ping
+    ansible.builtin.ping:
+  - name: YUM update
+    shell: yum update -y
+    register: result
+  - name: Display result
+    ansible.builtin.debug:
+      msg: result
+     

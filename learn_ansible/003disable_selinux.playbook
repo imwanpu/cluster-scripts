@@ -1,0 +1,12 @@
+---
+- hosts: all
+  tasks:
+  - name: Ping
+    ansible.builtin.ping:
+  - name: Disable SElinux
+    ansible.builtin.shell: "cp /etc/selinux/config /etc/selinux/config.bak && sed -i 's/SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config"
+  # - name: Reboot
+  #   ansible.builtin.shell: reboot
+  # ansible all -m shell -a 'reboot'
+  - name: Manually restart, Run `ansible all -m shell -a 'reboot'`
+    ansible.builtin.shell: "date"
