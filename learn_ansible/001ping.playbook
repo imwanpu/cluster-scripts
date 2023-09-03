@@ -1,0 +1,12 @@
+- hosts: all
+  tasks:
+  - name: Ping
+    ansible.builtin.ping:
+  - name: "Get df -h"
+    ansible.builtin.command: "df -h"
+    register: result
+    changed_when: result.rc != 0
+  - name: Display result
+    ansible.builtin.debug:
+      msg: "{{ result }}"
+      
