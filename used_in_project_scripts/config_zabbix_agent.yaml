@@ -1,0 +1,25 @@
+---
+- hosts: all
+  vars:
+    zabbix_agent_path: /etc/zabbix_agentd.conf
+  tasks:
+  - name: "Backup `zabbix_agentd.conf`"
+    ansible.builtin.shell: "/bin/cp {{ zabbix_agent_path }}{,.bk.$(date +%Y%m%d-%H%M%S)}"
+  - name: "Modify Server"
+    ansible.builtin.shell: "sudo /bin/sed -i 's/^Server=.*$/Server=172.16.43.48,172.16.43.49,172.16.43.56/g' {{ zabbix_agent_path }}"
+  - name: "Modify ServerActive"
+    ansible.builtin.shell: "sudo /bin/sed -i 's/^ServerActive=.*/ServerActive=172.16.43.48,172.16.43.49,172.16.43.56/g' {{ zabbix_agent_path }}"
+  - name: "Restart zabbix-agent"
+    ansible.builtin.shell: "sudo /bin/systemctl restart zabbix-agent"
+  - name: "Get zabbix-agent status"
+    ansible.builtin.shell: "sudo /bin/systemctl status zabbix-agent"
+    register: result_zabbix
+  - name: "Get modified lines"
+    ansible.builtin.shell: 'sudo grep -iE "^Server" {{ zabbix_agent_path }}'
+    register: result_config_file
+  - name: "Display result_zabbix"
+    ansible.builtin.debug:
+      msg: '{{ result_zabbix }}'
+  - name: "Display result_config_file"
+    ansible.builtin.debug:
+      msg: '{{ result_config_file }}'
